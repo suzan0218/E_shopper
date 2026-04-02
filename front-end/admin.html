@@ -1,0 +1,276 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>EShopper - Admin Panel</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+    <link href="img/favicon.ico" rel="icon">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+
+    <style>
+        body {
+            background: linear-gradient(135deg, #f8f6f2 0%, #eef4f8 100%);
+        }
+
+        .admin-shell {
+            min-height: calc(100vh - 180px);
+        }
+
+        .admin-hero {
+            border-radius: 14px;
+            background: linear-gradient(125deg, #d19c97 0%, #c98b84 100%);
+            color: #fff;
+        }
+
+        .admin-metric {
+            border-radius: 14px;
+            border: 1px solid #edf0f2;
+            background: #fff;
+            box-shadow: 0 8px 25px rgba(26, 26, 26, 0.05);
+        }
+
+        .admin-panel {
+            border-radius: 14px;
+            border: 1px solid #edf0f2;
+            background: #fff;
+            box-shadow: 0 8px 25px rgba(26, 26, 26, 0.05);
+        }
+
+        .tab-button {
+            border: 1px solid #d9d9d9;
+            background: #fff;
+            color: #111;
+        }
+
+        .tab-button.active {
+            border-color: #d19c97;
+            background: #d19c97;
+            color: #fff;
+        }
+
+        .admin-table-wrap {
+            max-height: 420px;
+            overflow: auto;
+        }
+
+        .admin-badge {
+            padding: 4px 10px;
+            border-radius: 100px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+        }
+
+        .admin-badge.success {
+            background: #e7f9ee;
+            color: #198754;
+        }
+
+        .admin-badge.warning {
+            background: #fff4d9;
+            color: #996c00;
+        }
+
+        .admin-badge.danger {
+            background: #fde7ea;
+            color: #c2344d;
+        }
+
+        .panel-hidden {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container-fluid">
+        <div class="row bg-secondary py-2 px-xl-5">
+            <div class="col-lg-6 d-none d-lg-block">
+                <div class="d-inline-flex align-items-center">
+                    <a class="text-dark" href="index.html">Store Front</a>
+                    <span class="text-muted px-2">|</span>
+                    <a class="text-dark" href="shop.html">Products</a>
+                </div>
+            </div>
+            <div class="col-lg-6 text-center text-lg-right">
+                <div class="d-inline-flex align-items-center" id="adminTopUser"></div>
+            </div>
+        </div>
+        <div class="row align-items-center py-3 px-xl-5">
+            <div class="col-lg-3 d-none d-lg-block">
+                <a href="admin.html" class="text-decoration-none">
+                    <h1 class="m-0 display-5 font-weight-semi-bold"><span class="text-primary font-weight-bold border px-3 mr-1">E</span>Admin</h1>
+                </a>
+            </div>
+            <div class="col-lg-9">
+                <nav class="navbar navbar-expand-lg bg-light navbar-light py-3 py-lg-0 px-0">
+                    <a href="admin.html" class="text-decoration-none d-block d-lg-none">
+                        <h1 class="m-0 display-5 font-weight-semi-bold"><span class="text-primary font-weight-bold border px-3 mr-1">E</span>Admin</h1>
+                    </a>
+                    <div class="navbar-nav mr-auto py-0">
+                        <a href="admin.html" class="nav-item nav-link active">Dashboard</a>
+                        <a href="index.html" class="nav-item nav-link">Store</a>
+                    </div>
+                    <div class="navbar-nav ml-auto py-0">
+                        <a href="#" class="nav-item nav-link" id="adminLogoutLink">Logout</a>
+                    </div>
+                </nav>
+            </div>
+        </div>
+    </div>
+
+    <div class="container-fluid pb-5 admin-shell">
+        <div class="row px-xl-5">
+            <div class="col-12">
+                <div class="admin-hero p-4 p-lg-5 mb-4">
+                    <h2 class="mb-2">Admin Dashboard</h2>
+                    <p class="mb-0">Manage catalog, orders, and users from one panel.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="row px-xl-5 mb-4" id="dashboardMetrics">
+            <div class="col-lg-4 col-md-6 mb-3">
+                <div class="admin-metric p-4">
+                    <h6 class="text-muted mb-2">Products</h6>
+                    <h3 class="mb-0" id="metricProducts">0</h3>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6 mb-3">
+                <div class="admin-metric p-4">
+                    <h6 class="text-muted mb-2">Orders</h6>
+                    <h3 class="mb-0" id="metricOrders">0</h3>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-12 mb-3">
+                <div class="admin-metric p-4">
+                    <h6 class="text-muted mb-2">Total Revenue</h6>
+                    <h3 class="mb-0" id="metricRevenue">$0.00</h3>
+                </div>
+            </div>
+        </div>
+
+        <div class="row px-xl-5 mb-4">
+            <div class="col-12" id="adminMessage"></div>
+        </div>
+
+        <div class="row px-xl-5 mb-3">
+            <div class="col-12 d-flex flex-wrap" style="gap: 8px;">
+                <button class="btn tab-button active" data-panel="productsPanel">Products</button>
+                <button class="btn tab-button" data-panel="ordersPanel">Orders</button>
+                <button class="btn tab-button" data-panel="usersPanel">Users</button>
+            </div>
+        </div>
+
+        <div class="row px-xl-5">
+            <div class="col-12">
+                <div class="admin-panel p-4" id="productsPanel">
+                    <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap" style="gap: 8px;">
+                        <h4 class="mb-0">Product Management</h4>
+                        <button class="btn btn-primary" id="refreshProductsBtn">Refresh</button>
+                    </div>
+
+                    <form id="productForm" class="mb-4">
+                        <input type="hidden" id="productId">
+                        <div class="form-row">
+                            <div class="form-group col-lg-4 col-md-6">
+                                <label for="productName">Name</label>
+                                <input type="text" class="form-control" id="productName" required>
+                            </div>
+                            <div class="form-group col-lg-2 col-md-6">
+                                <label for="productPrice">Price</label>
+                                <input type="number" class="form-control" id="productPrice" min="0" step="0.01" required>
+                            </div>
+                            <div class="form-group col-lg-2 col-md-6">
+                                <label for="productStock">Stock</label>
+                                <input type="number" class="form-control" id="productStock" min="0" step="1" required>
+                            </div>
+                            <div class="form-group col-lg-2 col-md-6">
+                                <label for="productCategoryId">Category ID</label>
+                                <input type="number" class="form-control" id="productCategoryId" min="1">
+                            </div>
+                            <div class="form-group col-lg-2 col-md-12">
+                                <label for="productImageUrl">Image URL</label>
+                                <input type="text" class="form-control" id="productImageUrl" placeholder="img/product-1.jpg">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="productDescription">Description</label>
+                            <textarea class="form-control" id="productDescription" rows="2"></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary" id="saveProductBtn">Save Product</button>
+                        <button type="button" class="btn btn-outline-secondary" id="clearProductBtn">Clear</button>
+                    </form>
+
+                    <div class="admin-table-wrap">
+                        <table class="table table-bordered table-hover">
+                            <thead class="thead-light">
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Name</th>
+                                    <th>Price</th>
+                                    <th>Stock</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="productsTableBody"></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="admin-panel p-4 panel-hidden" id="ordersPanel">
+                    <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap" style="gap: 8px;">
+                        <h4 class="mb-0">Order Management</h4>
+                        <button class="btn btn-primary" id="refreshOrdersBtn">Refresh</button>
+                    </div>
+                    <div class="admin-table-wrap">
+                        <table class="table table-bordered table-hover">
+                            <thead class="thead-light">
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Customer</th>
+                                    <th>Total</th>
+                                    <th>Status</th>
+                                    <th>Items</th>
+                                </tr>
+                            </thead>
+                            <tbody id="ordersTableBody"></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="admin-panel p-4 panel-hidden" id="usersPanel">
+                    <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap" style="gap: 8px;">
+                        <h4 class="mb-0">User Management</h4>
+                        <button class="btn btn-primary" id="refreshUsersBtn">Refresh</button>
+                    </div>
+                    <div class="admin-table-wrap">
+                        <table class="table table-bordered table-hover">
+                            <thead class="thead-light">
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Name</th>
+                                    <th>Email</th>
+                                    <th>Role</th>
+                                </tr>
+                            </thead>
+                            <tbody id="usersTableBody"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
+    <script src="js/admin.js"></script>
+</body>
+
+</html>
